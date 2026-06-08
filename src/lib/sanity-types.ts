@@ -22,6 +22,34 @@ export interface SanityAuthor {
   avatar?: SanityImage;
 }
 
+// ─── Pricing Types ──────────────────────────────────────────
+
+export interface SanityPricingTier {
+  _id: string;
+  _type: 'pricingTier';
+  name: string;
+  price: number;
+  currency?: string;
+  description: string;
+  features: string[];
+  cta: string;
+  highlighted?: boolean;
+  order: number;
+}
+
+export interface SanityPricingPage {
+  _id: string;
+  _type: 'pricingPage';
+  title: string;
+  subtitle: string;
+  description?: string;
+  tiers: SanityPricingTier[];
+  seoTitle?: string;
+  seoDescription?: string;
+}
+
+// ─── Blog & Content Types ───────────────────────────────────
+
 export interface SanityBlogPost {
   _id: string;
   title: string;

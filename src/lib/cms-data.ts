@@ -13,6 +13,7 @@
  */
 import { sanityClient, hasSanityConfig, urlFor } from './sanity';
 import {
+  pricingPageQuery,
   allBlogPostsQuery,
   blogPostBySlugQuery,
   relatedBlogPostsQuery,
@@ -23,6 +24,112 @@ import {
 import { blogPosts as localBlogPosts } from '../data/blog';
 import { caseStudies as localCaseStudies } from '../data/caseStudies';
 import type { SanityBlogPost, SanityCaseStudy, SanityResource } from './sanity-types';
+
+// ─── Pricing ────────────────────────────────────────────────
+
+export interface PricingTier {
+  _id: string;
+  name: string;
+  price: number;
+  currency: string;
+  description: string;
+  features: string[];
+  cta: string;
+  highlighted: boolean;
+  order: number;
+}
+
+export interface PricingPageData {
+  _id: string;
+  title: string;
+  subtitle: string;
+  description?: string;
+  tiers: PricingTier[];
+  seoTitle?: string;
+  seoDescription?: string;
+}
+
+const defaultPricingData: PricingPageData = {
+  _id: 'pricing-default',
+  title: 'Simple, Transparent Pricing',
+  subtitle: 'Choose the plan that works for your business.',
+  description: 'All plans include core features. Scale as you grow.',
+  tiers: [
+    {
+      _id: 'tier-starter',
+      name: 'Starter',
+      price: 299,
+      currency: 'USD',
+      description: 'Perfect for small teams getting started with Account Success automation.',
+      features: [
+        'Up to 50 accounts',
+        'Basic Account Success module',
+        '3 team members',
+        'Email support',
+        '30-day data retention',
+        'Standard API access',
+      ],
+      cta: 'Get Started',
+      highlighted: false,
+      order: 1,
+    },
+    {
+      _id: 'tier-professional',
+      name: 'Professional',
+      price: 999,
+      currency: 'USD',
+      description: 'For growing teams that need advanced automation and intelligence.',
+      features: [
+        'Up to 500 accounts',
+        'Full Account Success + Business Intelligence',
+        '10 team members',
+        'Priority email & chat support',
+        '1-year data retention',
+        'Advanced API access',
+        'Custom workflows',
+        'Role-based governance',
+      ],
+      cta: 'Start Free Trial',
+      highlighted: true,
+      order: 2,
+    },
+    {
+      _id: 'tier-enterprise',
+      name: 'Enterprise',
+      price: 0,
+      currency: 'USD',
+      description: 'Custom solution for large organizations with dedicated support.',
+      features: [
+        'Unlimited accounts',
+        'All modules and features',
+        'Unlimited team members',
+        '24/7 phone & chat support',
+        'Unlimited data retention',
+        'Premium API access',
+        'White-label options',
+        'Advanced security & compliance',
+        'Dedicated account manager',
+        'Custom SLA',
+      ],
+      cta: 'Contact Sales',
+      highlighted: false,
+      order: 3,
+    },
+  ],
+};
+
+export async function fetchPricingPage(): Promise<PricingPageData> {
+  if (!hasSanityConfig) {
+    return defaultPricingData;
+  }
+  try {
+    const data = await sanityClient.fetch<PricingPageData>(pricingPageQuery);
+    return data || defaultPricingData;
+  } catch (error) {
+    console.error('[v0] Failed to fetch pricing from Sanity:', error);
+    return defaultPricingData;
+  }
+}
 
 // ─── Blog Posts ─────────────────────────────────────────────
 

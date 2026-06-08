@@ -418,12 +418,140 @@ const resourceSchema = {
 };
 
 // ═══════════════════════════════════════════════════════════════
+// schemas/pricingTier.ts
+// ═══════════════════════════════════════════════════════════════
+const pricingTierSchema = {
+  name: 'pricingTier',
+  title: 'Pricing Tier',
+  type: 'document',
+  fields: [
+    {
+      name: 'name',
+      title: 'Tier Name',
+      type: 'string',
+      description: 'e.g., "Professional", "Enterprise"',
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'price',
+      title: 'Price',
+      type: 'number',
+      description: 'Monthly price in USD. Use 0 for "Custom"',
+      validation: (Rule) => Rule.required().min(0),
+    },
+    {
+      name: 'currency',
+      title: 'Currency',
+      type: 'string',
+      initialValue: 'USD',
+      options: {
+        list: ['USD', 'EUR', 'GBP'],
+      },
+    },
+    {
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 2,
+      description: 'Short description of the tier',
+      validation: (Rule) => Rule.required().max(200),
+    },
+    {
+      name: 'features',
+      title: 'Features',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'List of included features',
+      validation: (Rule) => Rule.required().min(1),
+    },
+    {
+      name: 'cta',
+      title: 'Call-to-Action',
+      type: 'string',
+      description: 'Button text, e.g., "Get Started", "Book a Demo"',
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'highlighted',
+      title: 'Most Popular',
+      type: 'boolean',
+      description: 'Mark this as the recommended plan',
+      initialValue: false,
+    },
+    {
+      name: 'order',
+      title: 'Display Order',
+      type: 'number',
+      description: '1 = first, 2 = second, etc.',
+      validation: (Rule) => Rule.required().min(1),
+    },
+  ],
+};
+
+// ═══════════════════════════════════════════════════════════════
+// schemas/pricingPage.ts
+// ═══════════════════════════════════════════════════════════════
+const pricingPageSchema = {
+  name: 'pricingPage',
+  title: 'Pricing Page',
+  type: 'document',
+  fields: [
+    {
+      name: 'title',
+      title: 'Page Title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'text',
+      rows: 2,
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 2,
+      description: 'Optional: longer description of the pricing model',
+    },
+    {
+      name: 'tiers',
+      title: 'Pricing Tiers',
+      type: 'array',
+      of: [
+        {
+          type: 'reference',
+          to: { type: 'pricingTier' },
+        },
+      ],
+      description: 'Add pricing tiers in desired order',
+      validation: (Rule) => Rule.required().min(1),
+    },
+    {
+      name: 'seoTitle',
+      title: 'SEO Title',
+      type: 'string',
+      description: 'For search engines and browser title',
+    },
+    {
+      name: 'seoDescription',
+      title: 'SEO Description',
+      type: 'text',
+      rows: 2,
+      description: 'For search engines (max 160 chars)',
+    },
+  ],
+};
+
+// ═══════════════════════════════════════════════════════════════
 // schemas/index.ts — export all schemas
 // ═══════════════════════════════════════════════════════════════
 const schemas = {
-  types: [authorSchema, blogPostSchema, caseStudySchema, resourceSchema],
+  types: [authorSchema, blogPostSchema, caseStudySchema, resourceSchema, pricingTierSchema, pricingPageSchema],
 };
 
 // Export for reference
-export { authorSchema, blogPostSchema, caseStudySchema, resourceSchema, schemas };
+export { authorSchema, blogPostSchema, caseStudySchema, resourceSchema, pricingTierSchema, pricingPageSchema, schemas };
 export default schemas;

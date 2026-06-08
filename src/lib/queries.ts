@@ -6,6 +6,28 @@
  * Learn more: https://www.sanity.io/docs/groq
  */
 
+// ─── PRICING QUERIES ────────────────────────────────────────
+
+export const pricingPageQuery = `*[_type == "pricingPage"][0] {
+  _id,
+  title,
+  subtitle,
+  description,
+  seoTitle,
+  seoDescription,
+  tiers[]-> {
+    _id,
+    name,
+    price,
+    currency,
+    description,
+    features,
+    cta,
+    highlighted,
+    order
+  } | order(order asc)
+}`;
+
 // ─── BLOG QUERIES ───────────────────────────────────────────
 
 export const allBlogPostsQuery = `*[_type == "blogPost" && defined(slug.current)] | order(publishedAt desc) {
