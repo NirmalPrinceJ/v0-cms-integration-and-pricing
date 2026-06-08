@@ -19,7 +19,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-iw-paper/95 backdrop-blur-sm border-b border-iw-rule">
       <div className="section-padding flex items-center justify-between h-16">
         <Link to="/" className="flex items-center gap-2">
-          <img src="./images/logo-dark.png" alt="IntegrateWise" className="h-8 w-auto" />
+          <img src="./images/logo-dark.webp" alt="IntegrateWise" className="h-8 w-auto" />
           <span className="font-iw-display text-xl tracking-wide">
             <span className="text-iw-ink">INTEGRATE</span>
             <span className="text-iw-gold">WISE</span>

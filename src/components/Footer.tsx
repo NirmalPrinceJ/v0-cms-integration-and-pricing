@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="flex items-center gap-6">
             <Link to="/" className="inline-flex items-center gap-2">
-              <img src="./images/logo-light.png" alt="IntegrateWise" className="h-8 w-auto" />
+              <img src="./images/logo-light.webp" alt="IntegrateWise" className="h-8 w-auto" />
               <span className="font-iw-display text-lg tracking-wide text-iw-paper hidden sm:inline">
                 INTEGRATE<span className="text-iw-gold-light">WISE</span>
               </span>

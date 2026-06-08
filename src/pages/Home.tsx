@@ -50,9 +50,9 @@ export default function Home() {
   }, []);
 
   const surfaceImages = {
-    data: './images/portfolio-overview.png',
-    twin: './images/morning-brief.png',
-    governance: './images/governance-view.png',
+    data: './images/portfolio-overview.webp',
+    twin: './images/morning-brief.webp',
+    governance: './images/governance-view.webp',
   };
   const surfaceLabels: Record<string, string> = { data: 'Your Data', twin: 'Digital Twin', governance: 'Governance' };
 
@@ -71,7 +71,7 @@ export default function Home() {
               </div>
             </div>
             <div className="hero-mockup hidden lg:block">
-              <BrowserFrame><img src="./images/hero-banner.png" alt="IntegrateWise Account Success dashboard" className="w-full object-contain" /></BrowserFrame>
+              <BrowserFrame><img src="./images/hero-banner.webp" alt="IntegrateWise Account Success dashboard" className="w-full object-contain" /></BrowserFrame>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default function Home() {
               <p className="font-iw-sans text-base text-iw-paper/70 leading-relaxed mb-8">A chatbot answers questions. Your Twin knows your business. It watches your accounts, reads your signals, and tells you what needs attention.</p>
               <Link to="/twin" className="inline-flex items-center justify-center px-6 py-3 bg-iw-gold text-iw-forest font-iw-sans font-semibold text-sm rounded-full hover:bg-iw-gold-pale">Explore the Digital Twin <ArrowRight size={16} className="ml-2" /></Link>
             </div>
-            <div><BrowserFrame className="h-96"><img src="./images/twin-workbench.png" alt="Twin Workbench" className="w-full object-contain" /></BrowserFrame></div>
+            <div><BrowserFrame className="h-96"><img src="./images/twin-workbench.webp" alt="Twin Workbench" className="w-full object-contain" /></BrowserFrame></div>
           </div>
         </div>
       </section>

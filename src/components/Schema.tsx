@@ -7,7 +7,7 @@ export function OrganizationSchema() {
       '@type': 'Organization',
       name: 'IntegrateWise',
       url: 'https://integratewise.ai',
-      logo: 'https://integratewise.ai./images/logo-dark.png',
+      logo: 'https://integratewise.ai./images/logo-dark.webp',
       description: 'One connected workspace for humans and their Digital Twin — with shared memory, governance, and continuity across every tool, AI, and operation.',
       sameAs: [
         'https://linkedin.com/company/integratewise',
