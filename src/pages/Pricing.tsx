@@ -1,108 +1,263 @@
-import { ArrowRight, Check, HelpCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import SectionLabel from '../components/SectionLabel';
+import { ArrowRight } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useSeo } from '../hooks/useSeo';
-import { fetchPricingPage, type PricingPageData } from '../lib/cms-data';
 
-const faqs = [
-  { q: 'What is a "view"?', a: 'A view is a connected workspace for a specific business function — like Account Success, Sales, Support, or Finance. Account Success gives you 1 view (Account + Technical Success combined). Business Operations gives you all 12 departmental views.' },
-  { q: 'Can I upgrade later?', a: 'Yes. Start with Account Success and upgrade to Business Operations anytime. Your data, connections, and Twin memory carry over seamlessly.' },
-  { q: 'Is there a free trial?', a: 'We do free guided demos instead of self-serve trials. This lets us connect your actual tools and show you real value in the first session.' },
-  { q: 'What counts as a user?', a: 'Anyone who logs into IntegrateWise and interacts with their Twin or the workbench. View-only dashboard access is free.' },
-  { q: 'Do you offer annual billing?', a: 'Yes. Annual billing gives you 2 months free. Contact us for enterprise annual contracts.' },
-];
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Pricing() {
-  const [pricing, setPricing] = useState<PricingPageData | null>(null);
-  const [loading, setLoading] = useState(true);
+  useSeo(
+    "Pricing — IntegrateWise Continuity Bridge",
+    "Simple, transparent pricing based on organizational scale. From startups to enterprises, pricing that grows with your AI integration needs."
+  );
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const data = await fetchPricingPage();
-        setPricing(data);
-      } catch (error) {
-        console.error('[v0] Failed to load pricing:', error);
-      } finally {
-        setLoading(false);
-      }
-    })();
+    const ctx = gsap.context(() => {
+      gsap.from('.hero-headline', { y: 40, opacity: 0, duration: 1, ease: 'power3.out' });
+      gsap.from('.pricing-tier', { y: 30, opacity: 0, duration: 0.6, stagger: 0.15, ease: 'power3.out', scrollTrigger: { trigger: '.pricing-grid', start: 'top 80%' } });
+      gsap.from('.faq-item', { y: 20, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out', scrollTrigger: { trigger: '.faq-section', start: 'top 85%' } });
+    });
+    return () => ctx.revert();
   }, []);
 
-  useSeo(pricing?.seoTitle || "Pricing | IntegrateWise", pricing?.seoDescription || "Account Success platform pricing. Transparent, scalable tiers with no hidden fees.");
-
-  if (loading || !pricing) {
-    return <div className="section-padding-y text-center">Loading pricing...</div>;
-  }
-
   return (
-    <div>
-      <section className="pt-32 pb-16 section-padding">
-        <div className="max-w-4xl">
-          <SectionLabel label="Pricing" />
-          <h1 className="editorial-heading text-4xl sm:text-5xl md:text-6xl text-iw-ink mt-6">{pricing.title.toUpperCase()}</h1>
-          <p className="font-iw-sans text-base sm:text-lg text-iw-slate mt-6 leading-relaxed max-w-2xl">{pricing.subtitle}</p>
-          {pricing.description && <p className="font-iw-sans text-sm text-iw-slate mt-4 leading-relaxed">{pricing.description}</p>}
+    <div ref={ref}>
+      {/* HERO */}
+      <section className="min-h-[50vh] bg-iw-forest flex items-center section-padding">
+        <div className="max-w-3xl mx-auto text-center">
+          <h1 className="hero-headline editorial-heading text-5xl md:text-6xl text-iw-paper mb-6">Simple, Transparent Pricing</h1>
+          <p className="editorial-serif text-lg text-iw-paper/80 max-w-2xl mx-auto">
+            Scale from startups to enterprises. Pay for what you use. No per-transaction costs, no surprise fees. One pricing model for all organizational sizes.
+          </p>
         </div>
       </section>
 
-      <section className="section-padding-y border-t border-iw-paper-deep">
-        <div className="section-padding">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 border border-iw-rule max-w-6xl">
-            {pricing.tiers.map((tier) => (
-              <div key={tier._id} className={`p-6 sm:p-8 flex flex-col ${pricing.tiers.indexOf(tier) < pricing.tiers.length - 1 ? 'lg:border-r border-b lg:border-b-0 border-iw-rule' : ''} ${tier.highlighted ? 'bg-iw-forest text-iw-paper' : ''}`}>
-                <div className="mb-6">
-                  <span className={`inline-block font-iw-mono text-xs uppercase tracking-widest px-3 py-1.5 rounded border mb-4 ${tier.highlighted ? 'text-iw-gold-pale border-iw-gold/40' : 'text-iw-forest border-iw-rule'}`}>{tier.name}</span>
-                  <div className="flex items-baseline gap-1">
-                    <span className="font-iw-display text-4xl tracking-wide">
-                      {tier.price === 0 ? 'Custom' : `$${tier.price}`}
-                    </span>
-                    {tier.price > 0 && <span className={`font-iw-mono text-sm ${tier.highlighted ? 'text-iw-paper/60' : 'text-iw-slate'}`}>/month</span>}
-                  </div>
-                  <p className={`font-iw-sans text-sm mt-2 ${tier.highlighted ? 'text-iw-paper/70' : 'text-iw-slate'}`}>{tier.description}</p>
-                </div>
-                <ul className="space-y-3 mb-8 flex-1">
-                  {tier.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <Check size={16} className={`shrink-0 mt-0.5 ${tier.highlighted ? 'text-iw-gold' : 'text-iw-forest'}`} />
-                      <span className={`font-iw-sans text-sm ${tier.highlighted ? 'text-iw-paper/80' : 'text-iw-slate'}`}>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <a href="https://calendar.app.google/EcRkSqxwtchuF4Qf6" className={`inline-flex items-center justify-center px-6 py-3 font-iw-sans font-semibold text-sm rounded-full transition-all ${tier.highlighted ? 'bg-iw-paper text-iw-forest hover:bg-iw-gold-pale' : 'bg-iw-ink text-iw-paper hover:bg-iw-forest'}`}>
-                  {tier.cta} <ArrowRight size={16} className="ml-2" />
-                </a>
+      {/* PRICING TIERS */}
+      <section className="pricing-grid py-24 bg-iw-paper section-padding">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="editorial-serif text-lg text-iw-slate max-w-2xl mx-auto">Pricing is based on your organizational scale: number of AI systems and enterprise applications connected through the Bridge, plus features and support.</p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            {/* Starter */}
+            <div className="pricing-tier bg-gradient-to-br from-iw-forest/5 to-iw-forest/10 border border-iw-forest/20 rounded-lg p-8">
+              <h3 className="font-iw-sans font-semibold text-2xl text-iw-forest mb-2">Starter</h3>
+              <p className="font-iw-mono text-xs text-iw-slate mb-6 uppercase tracking-widest">For early adoption</p>
+              <div className="text-4xl font-bold text-iw-forest mb-8">$499<span className="text-sm text-iw-slate">/month</span></div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Up to 3 AI systems</span>
+                </li>
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Up to 2 enterprise apps</span>
+                </li>
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Basic governance</span>
+                </li>
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Email support</span>
+                </li>
+              </ul>
+              <button className="w-full py-3 bg-iw-forest text-iw-paper font-iw-sans font-semibold rounded-lg hover:bg-iw-forest-bright transition-colors">
+                Get Started
+              </button>
+            </div>
+
+            {/* Growth */}
+            <div className="pricing-tier bg-gradient-to-br from-iw-gold/20 to-iw-gold/30 border-2 border-iw-gold rounded-lg p-8 relative">
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-iw-gold px-4 py-1 rounded-full">
+                <span className="font-iw-mono text-xs text-iw-forest font-bold uppercase">Popular</span>
+              </div>
+              <h3 className="font-iw-sans font-semibold text-2xl text-iw-forest mb-2">Growth</h3>
+              <p className="font-iw-mono text-xs text-iw-slate mb-6 uppercase tracking-widest">For scaling teams</p>
+              <div className="text-4xl font-bold text-iw-forest mb-8">$1,499<span className="text-sm text-iw-slate">/month</span></div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Up to 10 AI systems</span>
+                </li>
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Up to 10 enterprise apps</span>
+                </li>
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Advanced governance & audit</span>
+                </li>
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Priority support</span>
+                </li>
+              </ul>
+              <button className="w-full py-3 bg-iw-gold text-iw-forest font-iw-sans font-semibold rounded-lg hover:bg-iw-gold-light transition-colors">
+                Get Started
+              </button>
+            </div>
+
+            {/* Enterprise */}
+            <div className="pricing-tier bg-gradient-to-br from-iw-forest/5 to-iw-forest/10 border border-iw-forest/20 rounded-lg p-8">
+              <h3 className="font-iw-sans font-semibold text-2xl text-iw-forest mb-2">Enterprise</h3>
+              <p className="font-iw-mono text-xs text-iw-slate mb-6 uppercase tracking-widest">For large organizations</p>
+              <div className="text-4xl font-bold text-iw-forest mb-8">Custom</div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Unlimited AI systems</span>
+                </li>
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Unlimited enterprise apps</span>
+                </li>
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Full compliance suite</span>
+                </li>
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Dedicated support</span>
+                </li>
+              </ul>
+              <button className="w-full py-3 border-2 border-iw-forest text-iw-forest font-iw-sans font-semibold rounded-lg hover:bg-iw-forest/5 transition-colors">
+                Contact Sales
+              </button>
+            </div>
+
+            {/* On-Premise */}
+            <div className="pricing-tier bg-gradient-to-br from-iw-forest/5 to-iw-forest/10 border border-iw-forest/20 rounded-lg p-8">
+              <h3 className="font-iw-sans font-semibold text-2xl text-iw-forest mb-2">On-Premise</h3>
+              <p className="font-iw-mono text-xs text-iw-slate mb-6 uppercase tracking-widest">For regulated industries</p>
+              <div className="text-4xl font-bold text-iw-forest mb-8">Custom</div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Your infrastructure</span>
+                </li>
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Your security controls</span>
+                </li>
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Compliance by design</span>
+                </li>
+                <li className="flex gap-2 text-sm text-iw-slate">
+                  <span className="text-iw-gold font-bold">✓</span>
+                  <span>Dedicated support team</span>
+                </li>
+              </ul>
+              <button className="w-full py-3 border-2 border-iw-forest text-iw-forest font-iw-sans font-semibold rounded-lg hover:bg-iw-forest/5 transition-colors">
+                Contact Sales
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURE COMPARISON */}
+      <section className="py-24 bg-iw-forest section-padding">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="editorial-heading text-3xl md:text-4xl text-center text-iw-paper mb-16">What's Included in Every Plan</h2>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-iw-sans font-semibold text-lg text-iw-gold mb-4">Platform Features</h3>
+              <ul className="space-y-3">
+                <li className="flex gap-3 text-iw-paper/90">
+                  <span className="text-iw-gold">✓</span>
+                  <span className="editorial-serif">Context normalization across all enterprise systems</span>
+                </li>
+                <li className="flex gap-3 text-iw-paper/90">
+                  <span className="text-iw-gold">✓</span>
+                  <span className="editorial-serif">Unified capability definitions and permissions</span>
+                </li>
+                <li className="flex gap-3 text-iw-paper/90">
+                  <span className="text-iw-gold">✓</span>
+                  <span className="editorial-serif">Knowledge persistence across vendor changes</span>
+                </li>
+                <li className="flex gap-3 text-iw-paper/90">
+                  <span className="text-iw-gold">✓</span>
+                  <span className="editorial-serif">Real-time sync with enterprise systems</span>
+                </li>
+                <li className="flex gap-3 text-iw-paper/90">
+                  <span className="text-iw-gold">✓</span>
+                  <span className="editorial-serif">Audit logs for all actions and data access</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-iw-sans font-semibold text-lg text-iw-gold mb-4">All Plans Include</h3>
+              <ul className="space-y-3">
+                <li className="flex gap-3 text-iw-paper/90">
+                  <span className="text-iw-gold">✓</span>
+                  <span className="editorial-serif">API access for all AI systems</span>
+                </li>
+                <li className="flex gap-3 text-iw-paper/90">
+                  <span className="text-iw-gold">✓</span>
+                  <span className="editorial-serif">99.9% uptime SLA</span>
+                </li>
+                <li className="flex gap-3 text-iw-paper/90">
+                  <span className="text-iw-gold">✓</span>
+                  <span className="editorial-serif">Single sign-on (SSO)</span>
+                </li>
+                <li className="flex gap-3 text-iw-paper/90">
+                  <span className="text-iw-gold">✓</span>
+                  <span className="editorial-serif">Data encryption in transit and at rest</span>
+                </li>
+                <li className="flex gap-3 text-iw-paper/90">
+                  <span className="text-iw-gold">✓</span>
+                  <span className="editorial-serif">SOC 2 Type II compliance</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="faq-section py-24 bg-iw-paper section-padding">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="editorial-heading text-3xl md:text-4xl text-center text-iw-forest mb-16">Questions About Pricing?</h2>
+
+          <div className="space-y-4">
+            {[
+              { q: "What if I need more systems than my tier includes?", a: "Upgrade anytime. All tiers support unlimited expansion at standard rates. Contact sales for custom scaling arrangements." },
+              { q: "Do you have startup or non-profit pricing?", a: "Yes. We offer 50% discounts for YC companies and non-profits. Contact our team at startups@integratewise.ai" },
+              { q: "What about annual billing?", a: "Annual subscriptions receive 20% discount + one free month of service. Contact sales for custom annual contracts." },
+              { q: "Is there a minimum contract?", a: "No minimum for Starter and Growth plans. Month-to-month, cancel anytime. Enterprise plans may include annual minimums." },
+              { q: "How do you count 'enterprise apps' or 'AI systems'?", a: "Each unique application or AI model counts as one system. So Salesforce = 1 system, ChatGPT = 1 system, Postgres database = 1 system." },
+            ].map((item, i) => (
+              <div key={i} className="faq-item bg-iw-forest/5 border border-iw-forest/20 rounded-lg p-6">
+                <h3 className="font-iw-sans font-semibold text-iw-forest mb-3">{item.q}</h3>
+                <p className="editorial-serif text-iw-slate">{item.a}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section-padding-y bg-iw-paper-warm">
-        <div className="section-padding max-w-3xl">
-          <SectionLabel label="FAQ" />
-          <h2 className="editorial-heading text-2xl sm:text-3xl text-iw-ink mt-4 mb-10">COMMON QUESTIONS.</h2>
-          <div className="space-y-6">
-            {faqs.map((faq, i) => (
-              <div key={i} className="border-b border-iw-rule pb-6">
-                <div className="flex items-start gap-3">
-                  <HelpCircle size={18} className="text-iw-forest shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-iw-display text-lg tracking-wide text-iw-ink mb-2">{faq.q}</h3>
-                    <p className="font-iw-sans text-sm text-iw-slate leading-relaxed">{faq.a}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+      {/* FINAL CTA */}
+      <section className="py-24 bg-iw-forest section-padding">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="editorial-heading text-3xl md:text-4xl text-iw-paper mb-6">Ready to Own Your AI Integration?</h2>
+          <p className="editorial-serif text-lg text-iw-paper/80 mb-10">
+            Start with a demo to understand how Continuity Bridge pricing scales with your organization. No pressure, no commitment.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <a href="https://calendar.app.google/EcRkSqxwtchuF4Qf6" className="inline-flex items-center justify-center px-10 py-4 bg-iw-gold text-iw-forest font-iw-sans font-semibold rounded-full hover:bg-iw-gold-light transition-colors">
+              Schedule Demo
+            </a>
+            <a href="/platform" className="inline-flex items-center justify-center px-10 py-4 border-2 border-iw-gold text-iw-gold font-iw-sans font-semibold rounded-full hover:bg-iw-gold/10 transition-colors">
+              Learn Platform <ArrowRight className="ml-2 w-4 h-4" />
+            </a>
           </div>
-        </div>
-      </section>
-
-      <section className="section-padding-y">
-        <div className="section-padding text-center max-w-2xl mx-auto">
-          <h2 className="editorial-heading text-2xl sm:text-3xl text-iw-ink mb-4">NOT SURE WHICH TIER?</h2>
-          <p className="font-iw-sans text-base text-iw-slate leading-relaxed mb-8">Talk to us. We will help you figure out the right scope for your team.</p>
-          <a href="https://calendar.app.google/EcRkSqxwtchuF4Qf6" className="btn-primary">Book a Demo <ArrowRight size={16} className="ml-2" /></a>
         </div>
       </section>
     </div>
