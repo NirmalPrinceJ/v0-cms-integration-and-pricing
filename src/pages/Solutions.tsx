@@ -1,42 +1,132 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, Users, Building2, ArrowLeftRight, FileText, Bot } from 'lucide-react';
-import SectionLabel from '../components/SectionLabel';
+import { useEffect, useRef } from 'react';
+import { ArrowRight, Users, BarChart3, Lock, Zap, Layers } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useSeo } from '../hooks/useSeo';
 
-const solutions = [
-  { icon: Users, title: 'Account Success', tag: 'Account Management', desc: 'See your entire customer portfolio in one view. Your Twin surfaces at-risk signals and renewal opportunities before they become crises.', outcomes: ['Portfolio health at a glance', 'Churn signals weeks earlier', 'Renewal pipeline visibility', 'Every action has an audit trail'], href: '/use-cases' },
-  { icon: Building2, title: 'Business Operations', tag: 'Operations', desc: 'Connect every operational tool into one governed layer. Approval workflows, cross-functional handovers, and real-time sync.', outcomes: ['Cross-tool visibility', 'Approval-first governance', 'Smooth department handoffs', 'Real-time operational sync'], href: '/use-cases' },
-  { icon: ArrowLeftRight, title: 'Team Handovers', tag: 'Collaboration', desc: 'When someone leaves, their context stays. Decisions, reasoning, and approved actions are captured.', outcomes: ['Context survives people changes', 'Decision history preserved', 'Faster onboarding'], href: '/use-cases' },
-  { icon: FileText, title: 'Documentation', tag: 'Knowledge', desc: 'Documentation connected to live systems. Your Twin reads from your actual tools and surfaces what is really happening.', outcomes: ['Living documentation', 'Connected to real data', 'AI-synthesised updates'], href: '/use-cases' },
-  { icon: Bot, title: 'AI-Assisted Workflows', tag: 'Automation', desc: 'AI that proposes, not executes. Every workflow starts with a recommendation carrying evidence.', outcomes: ['Proposes, does not assume', 'Evidence-backed recommendations', 'Human approval at every step'], href: '/use-cases' },
-];
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Solutions() {
-  useSeo("Solutions | IntegrateWise", "Account Success, Business Operations, Team Handovers, Documentation, and AI-Assisted Workflows. All powered by the Spine.");
+  useSeo(
+    "Solutions by Persona — IntegrateWise Continuity Bridge",
+    "Solutions for CTOs, Enterprise Architects, InfoSec & Compliance leaders, and Operations teams. How the Bridge addresses each buyer's unique challenges."
+  );
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.hero-headline', { y: 40, opacity: 0, duration: 1, ease: 'power3.out' });
+      gsap.from('.persona-card', { y: 30, opacity: 0, duration: 0.6, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: '.personas-grid', start: 'top 80%' } });
+    });
+    return () => ctx.revert();
+  }, []);
+
+  const personas = [
+    {
+      icon: Zap,
+      role: 'CTO / VP Engineering',
+      title: 'Scaling AI Without Technical Debt',
+      problem: 'Every new AI tool requires custom integration. Engineering burns cycles rebuilding connectors. You need a model-agnostic foundation that scales.',
+      solution: 'The Bridge abstracts away vendor lock-in. Integrations happen once. Your engineering team owns the capability layer, not plays catch-up with vendor updates.',
+      benefits: ['Vendor independence reduces re-engineering', 'Model selection becomes a business decision, not an engineering constraint', 'API-first architecture scales with new AI vendors'],
+      color: 'border-l-4 border-iw-forest',
+    },
+    {
+      icon: BarChart3,
+      role: 'Enterprise Architect',
+      title: 'Solving the N×M Integration Problem',
+      problem: 'Your organization is in chaos: 4 enterprise apps, 3 AI models already deployed, and more coming. Integrating everything point-to-point is exponential complexity.',
+      solution: 'The Bridge is an ESB for AI. Connect apps once (N), connect AI once (M). Total integrations drop from N×M to N+M. Maintenance becomes manageable.',
+      benefits: ['80% fewer integrations at scale', 'Centralized data governance and compliance', 'Architectural flexibility for future models'],
+      color: 'border-l-4 border-iw-gold',
+    },
+    {
+      icon: Lock,
+      role: 'CISO / Compliance Officer',
+      title: 'Enterprise Security & Governance',
+      problem: 'AI tools access your most sensitive data. Each vendor has different security controls. Audit trails are fragmented. Compliance is impossible to prove.',
+      solution: 'The Bridge enforces security at the organizational layer. One compliance policy protects all connected AI systems. Unified audit trails. Role-based access that actually works.',
+      benefits: ['Unified security policy across all AI systems', 'Compliance-first architecture (SOC2, HIPAA, FedRamp ready)', 'Audit trails that satisfy enterprise requirements'],
+      color: 'border-l-4 border-iw-forest',
+    },
+    {
+      icon: Layers,
+      role: 'Operations Director',
+      title: 'Consistent Governance at Scale',
+      problem: 'Your teams use different AI tools. Knowledge is scattered. Approval workflows are inconsistent. Switching to a better model means weeks of re-work.',
+      solution: 'The Bridge centralizes operational control. Governance policies apply uniformly. Organizational knowledge persists across model transitions. Operations becomes predictable.',
+      benefits: ['Model switches without operational disruption', 'Unified approval and compliance workflows', 'Organizational knowledge protected across transitions'],
+      color: 'border-l-4 border-iw-gold',
+    },
+    {
+      icon: Users,
+      role: 'AI Center of Excellence Lead',
+      title: 'Empowering Teams While Maintaining Control',
+      problem: 'You want different teams to pick the best AI for their needs, but you need unified governance. Decentralized = chaos. Centralized = doesn\'t scale.',
+      solution: 'The Bridge enables controlled decentralization. Teams pick their AI model. The Bridge enforces your governance. Everyone operates from the same organizational knowledge.',
+      benefits: ['Teams pick the best AI per use case', 'Governance enforced automatically', 'Shared organizational knowledge layer'],
+      color: 'border-l-4 border-iw-forest',
+    },
+    {
+      icon: BarChart3,
+      role: 'Finance / Procurement',
+      title: 'Optimizing AI Vendor Spend',
+      problem: 'You\'ve invested heavily in AI licensing. New models offer 40% savings but switching costs are too high. You\'re locked in.',
+      solution: 'The Bridge eliminates switching costs. Evaluate new vendors based on ROI alone. Change models without technical debt. Negotiate from strength.',
+      benefits: ['Vendor independence = better negotiating leverage', 'True cost comparison based on value, not switching cost', 'Maximize ROI on existing integrations'],
+      color: 'border-l-4 border-iw-gold',
+    },
+  ];
 
   return (
-    <div>
-      <section className="pt-32 pb-16 section-padding">
-        <div className="max-w-4xl">
-          <SectionLabel label="Solutions" />
-          <h1 className="editorial-heading text-4xl sm:text-5xl md:text-6xl text-iw-ink mt-6">FIVE PROBLEMS. ONE ANSWER.</h1>
-          <p className="font-iw-sans text-base sm:text-lg text-iw-slate mt-6 leading-relaxed max-w-2xl">Every growing team faces these challenges. IntegrateWise solves them with one approach: connect your tools, power your AI with context, and keep humans in control.</p>
+    <div ref={ref}>
+      {/* HERO */}
+      <section className="min-h-[60vh] bg-iw-forest flex items-center section-padding">
+        <div className="max-w-3xl mx-auto text-center">
+          <h1 className="hero-headline editorial-heading text-5xl md:text-6xl text-iw-paper mb-6">Solutions for Every Enterprise Role</h1>
+          <p className="editorial-serif text-lg text-iw-paper/80 max-w-2xl mx-auto">
+            Whether you're an architect, security leader, or operations exec, the Continuity Bridge solves your specific challenge with the N×M integration problem.
+          </p>
         </div>
       </section>
-      <section className="section-padding-y border-t border-iw-paper-deep">
-        <div className="section-padding">
-          <div className="space-y-0 border border-iw-rule max-w-5xl">
-            {solutions.map((sol, i) => (
-              <div key={i} className={`p-6 sm:p-8 ${i < solutions.length - 1 ? 'border-b border-iw-rule' : ''}`}>
-                <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
-                  <div className="lg:w-1/3">
-                    <div className="flex items-center gap-3 mb-3"><div className="w-10 h-10 rounded-full bg-iw-forest/10 flex items-center justify-center"><sol.icon size={20} className="text-iw-forest" /></div><span className="font-iw-mono text-xs text-iw-gold uppercase tracking-widest">{sol.tag}</span></div>
-                    <h3 className="font-iw-display text-xl tracking-wide text-iw-ink mb-2">{sol.title}</h3>
-                    <Link to={sol.href} className="inline-flex items-center font-iw-mono text-xs text-iw-forest uppercase tracking-widest hover:text-iw-gold transition-colors">See details <ArrowRight size={14} className="ml-1" /></Link>
+
+      {/* PERSONAS GRID */}
+      <section className="personas-grid py-24 bg-iw-paper section-padding">
+        <div className="max-w-5xl mx-auto">
+          <div className="space-y-8">
+            {personas.map((persona, i) => (
+              <div key={i} className={`persona-card bg-iw-paper border rounded-lg p-10 ${persona.color}`}>
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="w-12 h-12 rounded-full bg-iw-forest/10 flex items-center justify-center flex-shrink-0">
+                    <persona.icon className="w-6 h-6 text-iw-forest" />
                   </div>
-                  <div className="lg:w-2/3">
-                    <p className="font-iw-sans text-sm text-iw-slate leading-relaxed mb-4">{sol.desc}</p>
-                    <div className="flex flex-wrap gap-2">{sol.outcomes.map((out, j) => <span key={j} className="font-iw-mono text-xs text-iw-forest/70 bg-iw-forest/5 px-2 py-1 rounded">{out}</span>)}</div>
+                  <div>
+                    <p className="font-iw-mono text-xs uppercase tracking-widest text-iw-gold mb-1">{persona.role}</p>
+                    <h3 className="font-iw-sans font-semibold text-2xl text-iw-forest">{persona.title}</h3>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div>
+                    <p className="font-iw-mono text-xs uppercase tracking-widest text-iw-red mb-2 font-semibold">Your Challenge</p>
+                    <p className="editorial-serif text-iw-slate">{persona.problem}</p>
+                  </div>
+
+                  <div>
+                    <p className="font-iw-mono text-xs uppercase tracking-widest text-iw-gold mb-2 font-semibold">How Bridge Helps</p>
+                    <p className="editorial-serif text-iw-slate">{persona.solution}</p>
+                  </div>
+
+                  <div>
+                    <p className="font-iw-mono text-xs uppercase tracking-widest text-iw-forest mb-3 font-semibold">Key Benefits</p>
+                    <ul className="space-y-2">
+                      {persona.benefits.map((benefit, j) => (
+                        <li key={j} className="flex gap-3">
+                          <span className="text-iw-gold font-semibold flex-shrink-0">→</span>
+                          <span className="editorial-serif text-iw-slate">{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -44,11 +134,32 @@ export default function Solutions() {
           </div>
         </div>
       </section>
-      <section className="section-padding-y bg-iw-forest text-iw-paper">
-        <div className="section-padding text-center max-w-2xl mx-auto">
-          <h2 className="editorial-heading text-2xl sm:text-3xl text-iw-paper mb-4">WHICH SOLUTION DO YOU NEED FIRST?</h2>
-          <p className="font-iw-sans text-base text-iw-paper/70 leading-relaxed mb-8">Talk to us. No sales script. Just a conversation about your operational reality.</p>
-          <a href="https://calendar.app.google/EcRkSqxwtchuF4Qf6" className="inline-flex items-center justify-center px-6 py-3 bg-iw-paper text-iw-forest font-iw-sans font-semibold text-sm rounded-full hover:bg-iw-gold-pale">Book a Demo <ArrowRight size={16} className="ml-2" /></a>
+
+      {/* COMMON THREAD */}
+      <section className="py-24 bg-iw-forest/5 section-padding">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="editorial-heading text-4xl md:text-5xl text-iw-forest mb-6">A Common Thread</h2>
+          <p className="editorial-serif text-lg text-iw-slate mb-10 max-w-2xl mx-auto">
+            Regardless of role, every stakeholder faces the same core reality: the organization must own its AI capability layer. The Continuity Bridge is that layer.
+          </p>
+          <div className="bg-iw-paper border border-iw-rule rounded-lg p-8">
+            <p className="editorial-serif text-xl text-iw-forest font-semibold">
+              "The Bridge makes your organization AI-vendor independent while maintaining the security, governance, and integration discipline that enterprises require."
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* BOTTOM CTA */}
+      <section className="py-24 bg-iw-paper section-padding">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="editorial-heading text-3xl md:text-4xl text-iw-forest mb-6">Which Role Describes Your Situation?</h2>
+          <p className="editorial-serif text-lg text-iw-slate mb-10">
+            Let us talk through how the Bridge addresses your specific organizational challenges.
+          </p>
+          <a href="https://calendar.app.google/EcRkSqxwtchuF4Qf6" className="inline-flex items-center justify-center px-10 py-4 bg-iw-forest text-iw-paper font-iw-sans font-semibold rounded-full hover:bg-iw-forest-bright transition-colors">
+            Schedule Strategy Call <ArrowRight className="ml-2 w-4 h-4" />
+          </a>
         </div>
       </section>
     </div>
