@@ -23,6 +23,7 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Docs from './pages/Docs';
 import ContinuityBridge from './pages/ContinuityBridge';
+import ProductShowcase from './pages/ProductShowcase';
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/solutions" element={<Solutions />} />
         <Route path="/twin" element={<Twin />} />
         <Route path="/continuity-bridge" element={<ContinuityBridge />} />
+        <Route path="/product-showcase" element={<ProductShowcase />} />
         <Route path="/governance" element={<Governance />} />
         <Route path="/architecture" element={<Architecture />} />
         <Route path="/pricing" element={<Pricing />} />
