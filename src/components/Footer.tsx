@@ -29,6 +29,7 @@ export default function Footer() {
             <Link to="/platform" className="font-iw-sans text-iw-paper/70 hover:text-iw-paper transition-colors">Platform</Link>
             <Link to="/features" className="font-iw-sans text-iw-paper/70 hover:text-iw-paper transition-colors">Features</Link>
             <Link to="/solutions" className="font-iw-sans text-iw-paper/70 hover:text-iw-paper transition-colors">Solutions</Link>
+            <Link to="/continuity-bridge" className="font-iw-sans text-iw-paper/70 hover:text-iw-paper transition-colors">Continuity Bridge</Link>
             <Link to="/blog" className="font-iw-sans text-iw-paper/70 hover:text-iw-paper transition-colors">Blog</Link>
             <Link to="/pricing" className="font-iw-sans text-iw-paper/70 hover:text-iw-paper transition-colors">Pricing</Link>
             <Link to="/about" className="font-iw-sans text-iw-paper/70 hover:text-iw-paper transition-colors">About</Link>

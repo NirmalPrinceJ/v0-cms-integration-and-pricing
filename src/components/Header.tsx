@@ -6,6 +6,7 @@ const navLinks = [
   { label: 'Platform', href: '/platform' },
   { label: 'Features', href: '/features' },
   { label: 'Solutions', href: '/solutions' },
+  { label: 'Continuity Bridge', href: '/continuity-bridge' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'About', href: '/about' },
   { label: 'Blog', href: '/blog' },
