@@ -25,27 +25,36 @@ const token = import.meta.env.VITE_SANITY_API_TOKEN || '';
 
 export const hasSanityConfig = Boolean(projectId && dataset);
 
-export const sanityClient = createClient({
-  projectId,
-  dataset,
-  apiVersion,
-  useCdn: true,
-  perspective: 'published',
-  ...(token ? { token } : {}),
-});
-
-// Image URL builder
-const builder = imageUrlBuilder(sanityClient);
-export const urlFor = (source: Parameters<typeof builder.image>[0]) => builder.image(source);
-
-// Preview client (for drafts — requires token)
-export const previewClient = token
+// Only create Sanity clients if projectId is configured
+export const sanityClient = hasSanityConfig
   ? createClient({
       projectId,
       dataset,
       apiVersion,
-      useCdn: false,
-      token,
-      perspective: 'previewDrafts',
+      useCdn: true,
+      perspective: 'published',
+      ...(token ? { token } : {}),
     })
   : null;
+
+// Image URL builder (create at module level)
+const builder = sanityClient ? imageUrlBuilder(sanityClient) : null;
+
+// Image URL builder function
+export const urlFor = (source: any) => {
+  if (!builder) return null;
+  return builder.image(source);
+};
+
+// Preview client (for drafts — requires token and projectId)
+export const previewClient =
+  hasSanityConfig && token
+    ? createClient({
+        projectId,
+        dataset,
+        apiVersion,
+        useCdn: false,
+        token,
+        perspective: 'previewDrafts',
+      })
+    : null;

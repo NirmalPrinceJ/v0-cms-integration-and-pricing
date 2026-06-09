@@ -119,7 +119,7 @@ const defaultPricingData: PricingPageData = {
 };
 
 export async function fetchPricingPage(): Promise<PricingPageData> {
-  if (!hasSanityConfig) {
+  if (!hasSanityConfig || !sanityClient) {
     return defaultPricingData;
   }
   try {
@@ -216,7 +216,7 @@ function mapLocalCaseStudy(study: typeof localCaseStudies[0]): CaseStudyItem {
 // ─── Blog Post Fetchers ─────────────────────────────────────
 
 export async function fetchBlogPosts(): Promise<BlogPostItem[]> {
-  if (!hasSanityConfig) {
+  if (!hasSanityConfig || !sanityClient) {
     return localBlogPosts.map(mapLocalBlogPost);
   }
   try {
@@ -232,7 +232,7 @@ export async function fetchBlogPosts(): Promise<BlogPostItem[]> {
       tags: p.tags,
       featured: p.featured,
       readTime: p.readTime,
-      coverImage: p.coverImage ? urlFor(p.coverImage).url() : undefined,
+      coverImage: p.coverImage ? (urlFor(p.coverImage)?.url?.() ?? undefined) : undefined,
       seoTitle: p.seoTitle,
       seoDescription: p.seoDescription,
     }));
@@ -242,7 +242,7 @@ export async function fetchBlogPosts(): Promise<BlogPostItem[]> {
 }
 
 export async function fetchBlogPostBySlug(slug: string): Promise<BlogPostItem | null> {
-  if (!hasSanityConfig) {
+  if (!hasSanityConfig || !sanityClient) {
     const post = localBlogPosts.find((p) => p.slug === slug);
     return post ? mapLocalBlogPost(post) : null;
   }
@@ -261,7 +261,7 @@ export async function fetchBlogPostBySlug(slug: string): Promise<BlogPostItem | 
       tags: post.tags,
       featured: post.featured,
       readTime: post.readTime,
-      coverImage: post.coverImage ? urlFor(post.coverImage).url() : undefined,
+      coverImage: post.coverImage ? (urlFor(post.coverImage)?.url?.() ?? undefined) : undefined,
       seoTitle: post.seoTitle,
       seoDescription: post.seoDescription,
     };
@@ -272,7 +272,7 @@ export async function fetchBlogPostBySlug(slug: string): Promise<BlogPostItem | 
 }
 
 export async function fetchRelatedBlogPosts(slug: string, category: string): Promise<BlogPostItem[]> {
-  if (!hasSanityConfig) {
+  if (!hasSanityConfig || !sanityClient) {
     return localBlogPosts
       .filter((p) => p.slug !== slug && p.category === category)
       .slice(0, 3)
@@ -301,7 +301,7 @@ export async function fetchRelatedBlogPosts(slug: string, category: string): Pro
 // ─── Case Study Fetchers ────────────────────────────────────
 
 export async function fetchCaseStudies(): Promise<CaseStudyItem[]> {
-  if (!hasSanityConfig) {
+  if (!hasSanityConfig || !sanityClient) {
     return localCaseStudies.map(mapLocalCaseStudy);
   }
   try {
@@ -329,7 +329,7 @@ export async function fetchCaseStudies(): Promise<CaseStudyItem[]> {
 }
 
 export async function fetchCaseStudyBySlug(slug: string): Promise<CaseStudyItem | null> {
-  if (!hasSanityConfig) {
+  if (!hasSanityConfig || !sanityClient) {
     const study = localCaseStudies.find((s) => s.slug === slug);
     return study ? mapLocalCaseStudy(study) : null;
   }
@@ -371,7 +371,7 @@ const localResources: ResourceItem[] = [
 ];
 
 export async function fetchResources(): Promise<ResourceItem[]> {
-  if (!hasSanityConfig) return localResources;
+  if (!hasSanityConfig || !sanityClient) return localResources;
   try {
     const resources = await sanityClient.fetch<SanityResource[]>(allResourcesQuery);
     return resources.map((r) => ({
