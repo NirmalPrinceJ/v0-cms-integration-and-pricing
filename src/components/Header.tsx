@@ -4,12 +4,9 @@ import { Menu, X } from 'lucide-react';
 
 const navLinks = [
   { label: 'Platform', href: '/platform' },
-  { label: 'Features', href: '/features' },
-  { label: 'Solutions', href: '/solutions' },
-  { label: 'Continuity Bridge', href: '/continuity-bridge' },
+  { label: 'Use Cases', href: '/use-cases' },
   { label: 'Pricing', href: '/pricing' },
-  { label: 'About', href: '/about' },
-  { label: 'Blog', href: '/blog' },
+  { label: 'Docs', href: '/docs' },
 ];
 
 export default function Header() {
@@ -43,7 +40,13 @@ export default function Header() {
             href="https://calendar.app.google/EcRkSqxwtchuF4Qf6"
             className="px-5 py-2 bg-iw-forest text-iw-paper font-iw-sans font-semibold text-xs rounded-full hover:bg-iw-forest-bright transition-colors"
           >
-            Book a Demo
+            Sign In
+          </a>
+          <a
+            href="#"
+            className="px-5 py-2 bg-iw-gold text-iw-forest font-iw-sans font-semibold text-xs rounded-full hover:bg-iw-gold-light transition-colors"
+          >
+            Start Free
           </a>
         </nav>
 
@@ -60,8 +63,11 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <a href="https://calendar.app.google/EcRkSqxwtchuF4Qf6" className="inline-block px-5 py-2 bg-iw-forest text-iw-paper font-iw-sans font-semibold text-xs rounded-full text-center">
-              Book a Demo
+            <a href="https://calendar.app.google/EcRkSqxwtchuF4Qf6" className="inline-block px-5 py-2 bg-iw-forest text-iw-paper font-iw-sans font-semibold text-xs rounded-full text-center hover:bg-iw-forest-bright">
+              Sign In
+            </a>
+            <a href="#" className="inline-block px-5 py-2 bg-iw-gold text-iw-forest font-iw-sans font-semibold text-xs rounded-full text-center hover:bg-iw-gold-light">
+              Start Free
             </a>
           </nav>
         </div>
