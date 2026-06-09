@@ -94,18 +94,28 @@ export default function Home() {
             <h2 className="editorial-heading text-3xl sm:text-4xl text-iw-ink">INTRODUCING IW CONTINUITY BRIDGE</h2>
             <p className="font-iw-sans text-base text-iw-slate mt-4 max-w-2xl mx-auto">The continuity layer between humans, AI systems, enterprise applications, and organizational memory.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {[
-              { title: 'Preserve Conversations', desc: 'Every thread and turn persists across systems' },
-              { title: 'Maintain Decisions', desc: 'Decisions stay connected to their context' },
-              { title: 'Compound Context', desc: 'Knowledge builds over time, not resets' },
-              { title: 'Enable Reasoning', desc: 'AI understands the why behind the what' },
-            ].map((item, i) => (
-              <div key={i} className="capability-item p-6 bg-iw-paper rounded-lg border border-iw-rule">
-                <h3 className="font-iw-display text-lg tracking-wide text-iw-ink mb-3">{item.title}</h3>
-                <p className="font-iw-sans text-sm text-iw-slate leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
+          {/* Bento Grid - Asymmetrical Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto auto-rows-max">
+            {/* Large item - top left, spans 2 cols */}
+            <div className="capability-item md:col-span-2 p-8 bg-iw-paper rounded-lg border border-iw-rule">
+              <h3 className="font-iw-display text-2xl tracking-wide text-iw-ink mb-3">Preserve Conversations</h3>
+              <p className="font-iw-sans text-base text-iw-slate leading-relaxed">Every thread and turn persists across ChatGPT, Claude, Gemini, and your internal systems. No context is ever lost.</p>
+            </div>
+            {/* Small item - top right */}
+            <div className="capability-item p-6 bg-iw-paper rounded-lg border border-iw-rule">
+              <h3 className="font-iw-display text-lg tracking-wide text-iw-ink mb-2">Maintain Decisions</h3>
+              <p className="font-iw-sans text-sm text-iw-slate leading-relaxed">Decisions stay connected to their full reasoning context.</p>
+            </div>
+            {/* Small item - middle left */}
+            <div className="capability-item p-6 bg-iw-paper rounded-lg border border-iw-rule">
+              <h3 className="font-iw-display text-lg tracking-wide text-iw-ink mb-2">Compound Context</h3>
+              <p className="font-iw-sans text-sm text-iw-slate leading-relaxed">Knowledge builds over time, never resets.</p>
+            </div>
+            {/* Large item - middle/bottom right, spans 2 cols */}
+            <div className="capability-item md:col-span-2 p-8 bg-iw-paper rounded-lg border border-iw-rule">
+              <h3 className="font-iw-display text-2xl tracking-wide text-iw-ink mb-3">Enable Reasoning</h3>
+              <p className="font-iw-sans text-base text-iw-slate leading-relaxed">AI understands the why behind every decision. Organizational reasoning becomes visible, auditable, and executable.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -126,20 +136,38 @@ export default function Home() {
         <div className="section-padding">
           <SectionLabel label="The Expansion" />
           <h2 className="editorial-heading text-3xl sm:text-4xl text-iw-ink mb-12 text-center">ONCE CONTINUITY EXISTS, ORGANIZATIONS UNLOCK</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              { title: 'Digital Twins', desc: 'Persistent AI counterparts for people, teams, and functions.' },
-              { title: 'Governance', desc: 'Approval flows, policies, and controls across all systems.' },
-              { title: 'Knowledge Layer', desc: 'Organizational memory that compounds over time.' },
-              { title: 'Operations', desc: 'Work gets executed directly from context.' },
-              { title: 'Integrations', desc: 'Connect enterprise systems through one capability layer.' },
-              { title: 'Architecture', desc: 'L1–L7 framework connecting humans, AI, and business.' },
-            ].map((item, i) => (
-              <div key={i} className="expansion-item p-6 bg-iw-paper-warm rounded-lg border border-iw-rule">
-                <h3 className="font-iw-display text-lg tracking-wide text-iw-ink mb-2">{item.title}</h3>
-                <p className="font-iw-sans text-sm text-iw-slate leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
+          {/* Bento Grid - Mixed sizes */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {/* Item 1 - Large, spans 1 col */}
+            <div className="expansion-item p-8 bg-iw-paper-warm rounded-lg border border-iw-rule lg:row-span-2 flex flex-col justify-center">
+              <h3 className="font-iw-display text-2xl tracking-wide text-iw-ink mb-3">Digital Twins</h3>
+              <p className="font-iw-sans text-base text-iw-slate leading-relaxed">Persistent AI counterparts for people, teams, and functions that understand your business.</p>
+            </div>
+            {/* Item 2 */}
+            <div className="expansion-item p-6 bg-iw-paper-warm rounded-lg border border-iw-rule">
+              <h3 className="font-iw-display text-lg tracking-wide text-iw-ink mb-2">Governance</h3>
+              <p className="font-iw-sans text-sm text-iw-slate leading-relaxed">Approval flows, policies, and controls across all systems.</p>
+            </div>
+            {/* Item 3 */}
+            <div className="expansion-item p-6 bg-iw-paper-warm rounded-lg border border-iw-rule">
+              <h3 className="font-iw-display text-lg tracking-wide text-iw-ink mb-2">Knowledge Layer</h3>
+              <p className="font-iw-sans text-sm text-iw-slate leading-relaxed">Organizational memory that compounds over time.</p>
+            </div>
+            {/* Item 4 */}
+            <div className="expansion-item p-6 bg-iw-paper-warm rounded-lg border border-iw-rule">
+              <h3 className="font-iw-display text-lg tracking-wide text-iw-ink mb-2">Operations</h3>
+              <p className="font-iw-sans text-sm text-iw-slate leading-relaxed">Work gets executed directly from context.</p>
+            </div>
+            {/* Item 5 */}
+            <div className="expansion-item p-6 bg-iw-paper-warm rounded-lg border border-iw-rule">
+              <h3 className="font-iw-display text-lg tracking-wide text-iw-ink mb-2">Integrations</h3>
+              <p className="font-iw-sans text-sm text-iw-slate leading-relaxed">Connect enterprise systems through one capability layer.</p>
+            </div>
+            {/* Item 6 - Large, spans 1 col */}
+            <div className="expansion-item p-8 bg-iw-paper-warm rounded-lg border border-iw-rule lg:row-span-2 flex flex-col justify-center">
+              <h3 className="font-iw-display text-2xl tracking-wide text-iw-ink mb-3">Architecture</h3>
+              <p className="font-iw-sans text-base text-iw-slate leading-relaxed">L1–L7 framework connecting humans, AI, and business seamlessly.</p>
+            </div>
           </div>
         </div>
       </section>
